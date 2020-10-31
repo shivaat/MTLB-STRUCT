@@ -1,0 +1,25 @@
+{
+  "mode": "DEV",
+  "data": {
+    "language": "RO",
+    "include_dev_examples": false,
+    "data_path": "../data/1.2/",
+    "max_len": 250,
+    "tags2idx": {"I_IRV": 0, "I_LVC.full": 1, "o_LVC.full": 2, "o_LVC.cause": 3, "I_IRV;I_IRV": 4, "o_VID": 5, "O": 6, "B_IRV": 7, "I_VID": 8, "B_LVC.cause": 9, "I_LVC.cause": 10, "B_VID": 11, "B_LVC.full": 12, "B_VID;B_IRV": 13, "I_VID;I_IRV": 14, "o_IRV": 15, "[CLS]": 16, "[SEP]": 17, "X": 18},
+    "do_lower_case": false
+  },
+  "model": {
+    "pretrained_model_name": "bert-base-multilingual-cased",
+    "pretrained_model_vocab": "bert-base-multilingual-cased",
+    "multi_task": true,
+    "transfer": "../struct-dep/saved/RO_DEV_bert-base-multilingual-cased_trainOnDep_multit-6ep/dep_tagger.torch"
+  },
+  "training": {
+    "batch_size": 20,
+    "num_epochs": 10,
+    "learning_rate": 3e-5,
+    "dep_loss_factor": 300,
+    "save_dir": "./saved/",
+    "seed": 100
+  }
+}

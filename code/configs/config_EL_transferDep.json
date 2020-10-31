@@ -1,0 +1,25 @@
+{
+  "mode": "DEV",
+  "data": {
+    "language": "EL",
+    "include_dev_examples": false,
+    "data_path": "../data/1.2/",
+    "max_len": 150,
+    "tags2idx": {"B_LVC.full;B_LVC.full;B_LVC.full": 0, "o_VPC.full": 1, "B_LVC.full;B_VPC.full;B_VPC.full": 2, "I_MVC": 3, "B_VID;B_LVC.full;B_LVC.cause": 4, "o_MVC": 5, "I_VID;I_VPC.full": 6, "I_VID;B_LVC.full": 7, "I_LVC.cause;I_LVC.cause": 8, "I_LVC.full;B_LVC.full": 9, "o_VID": 10, "o_LVC.cause": 11, "I_VID;I_LVC.full": 12, "o_LVC.full": 13, "B_LVC.full;B_LVC.full": 14, "B_VPC.full": 15, "I_VID;I_VID;I_VID": 16, "I_LVC.full": 17, "I_VID;I_VID": 18, "I_VPC.full": 19, "B_LVC.cause": 20, "B_VID;B_VID": 21, "I_LVC.full;I_LVC.full": 22, "I_VID;B_VID": 23, "B_LVC.cause;B_LVC.cause": 24, "I_LVC.full;I_VID": 25, "I_VID": 26, "I_VPC.full;I_VPC.full": 27, "O": 28, "I_LVC.full;I_LVC.full;I_LVC.full": 29, "I_LVC.cause": 30, "B_LVC.full": 31, "B_VID;B_VPC.full": 32, "B_VPC.full;B_VPC.full": 33, "B_VID": 34, "B_LVC.full;B_LVC.full;B_LVC.full;B_LVC.full": 35, "I_VID;I_VID;B_VID": 36, "B_LVC.full;B_VID": 37, "I_LVC.full;I_VPC.full": 38, "B_MVC": 39, "[CLS]": 40, "[SEP]": 41, "X": 42},
+    "do_lower_case": false
+  },
+  "model": {
+    "pretrained_model_name": "bert-base-multilingual-cased",
+    "pretrained_model_vocab": "bert-base-multilingual-cased",
+    "multi_task": true,
+    "transfer": "../struct-dep/saved/EL_DEV_bert-base-multilingual-cased_trainOnDep_multit/dep_tagger.torch"
+  },
+  "training": {
+    "batch_size": 12,
+    "num_epochs": 10,
+    "learning_rate": 3e-5,
+    "dep_loss_factor": 700,
+    "save_dir": "./saved/",
+    "seed": 100
+  }
+}

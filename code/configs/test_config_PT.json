@@ -1,0 +1,23 @@
+{
+  "mode": "TEST",
+  "data": {
+    "language": "PT",
+    "include_dev_examples": false,
+    "data_path": "../data/1.2/",
+    "max_len": 145,
+    "do_lower_case": true
+  },
+  "model": {
+    "pretrained_model_name": "bert-base-multilingual-cased",
+    "pretrained_model_vocab": "bert-base-multilingual-cased",
+    "multi_task": true
+  },
+  "training": {
+    "batch_size": 10,
+    "num_epochs": 5,
+    "learning_rate": 3e-5,
+    "dep_loss_factor": 700,
+    "save_dir": "./saved/",
+    "seed": 100
+  }
+}
