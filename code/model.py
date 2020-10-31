@@ -18,63 +18,7 @@ def get_adjacency(tag_ids):
     a = torch.tensor(a).long() 
     return a.to(device)
 
-class GraphConvolution(nn.Module):
-    """
-    Sentence-level Graph Convolution: https://www.aclweb.org/anthology/N19-1275.pdf
-    """
-    def __init__(self, input_dim, output_dim, self_links=True, backward_links=True, bias=True):
-        super(GraphConvolution, self).__init__()
-
-        self.self_links = self_links
-        self.backward_links = backward_links
-        self.bias = bias
-        self.num_nodes = None
-        self.input_dim = input_dim
-        self.output_dim = output_dim
-        self.num_adjacency_matrices = sum([1,self.backward_links,self.self_links])
-
-        self.W = []
-        for i in range(self.num_adjacency_matrices):
-            self.W.append(nn.Parameter(torch.FloatTensor(self.input_dim, self.output_dim)))
-        self.b = nn.Parameter(torch.FloatTensor(output_dim))
-
-        self.reset_parameters()
-
-    def reset_parameters(self):
-        stdv = 1. / math.sqrt(self.output_dim)
-        for i in range(len(self.W)):
-            self.W[i] = self.W[i].data.uniform_(-stdv, stdv)
-        if self.bias is not None:
-            self.b.data = self.b.data.uniform_(-stdv, stdv)
-
-    def forward(self, X, A):
-        #print('X:', X.size(), 'A:', A.size())
-        A = list(A)
-        self.num_nodes = A[0][0].shape[0] # shape: [batch, max_len, max_len]
-        if self.backward_links:
-            for i in range(len(A)):
-                A.append(torch.transpose(A[i], 0, 1))
-        if self.self_links:
-            A.append(torch.eye(self.num_nodes).long().to(device))
-        A = torch.stack(A)
-
-        AXWs = list()
-        for i in range(self.num_adjacency_matrices):
-            XW = torch.matmul(X, self.W[i].to(device))        # Shape: [batch, max_len, output_dim]
-            AXW = torch.matmul(A[i].float(), XW.to(device))   # Shape: [batch, max_len, output_dim]
-            AXWs.append(AXW)
-        AXWs_stacked = torch.stack(AXWs, dim=1).to(device)
-        output = torch.max(AXWs_stacked, dim=1)[0].to(device) # Shape: [batch, max_len, output_dim]
-        if self.bias:
-            output += self.b.to(device)
-        return F.relu(output)
-
 class CoNLLClassifier(BertForTokenClassification):
-
-    #def __init__(self, num_labels = None):
-    #    super(CoNLLClassifier, self).__init__()
-    #    self.gcn = GraphConvolution(768, 768)
-    #    self.classifier = nn.Linear(2*768, num_labels = self.num_labels)
 
     def forward(self, input_ids, tag_ids, attention_mask=None, token_type_ids=None,
                 position_ids=None, head_mask=None, labels=None, label_masks=None):
@@ -85,33 +29,16 @@ class CoNLLClassifier(BertForTokenClassification):
                             head_mask=head_mask)
 
         sequence_output = outputs[0]  # (b, MAX_LEN, 768)   # token_output
-        #print('bert outputs 0', sequence_output.size())
-        #print('tag_ids size', tag_ids.size())
+
         token_reprs = [embedding[mask] for mask, embedding in zip(label_masks, sequence_output)]
         token_reprs = pad_sequence(sequences=token_reprs, batch_first=True,
                                    padding_value=-1)  # (b, local_max_len, 768)
         tag_rep = [tag[mask] for mask, tag in zip(label_masks,tag_ids)]
         
         tag_rep = pad_sequence(sequences=tag_rep, batch_first=True, padding_value=-1)
-        #print('tag_rep size', tag_rep.size()) 
-        #print(tag_rep[0:3])       
 
         sequence_output = self.dropout(token_reprs)
         
-        # adding GCN this way, I ended up seeing F-score 0
-        #self.gcn = GraphConvolution(768, 768) #256)  #(300,300) # This should ideally be defined in init
-        #self.classifier = nn.Linear(256, num_labels = self.num_labels)
-        
-        #adj_matrix = get_adjacency(tag_rep)
-        
-        #gcn = self.gcn(sequence_output,adj_matrix)
-        #print('GCN size', gcn.size())
-        
-        #gcn = self.dropout(gcn)
-
-        #sequence_output = torch.cat((sequence_output, gcn), -1)
-
-        #logits = self.classifier(gcn)  # (b, local_max_len, num_labels)
         logits = self.classifier(sequence_output)
 
         outputs = (logits,)
@@ -159,7 +86,7 @@ class DepMultiTaskClassify(nn.Module):    #(BertForTokenClassification):   #(nn.
         logits = self.classifier(token_reprs)  # (b, local_max_len, num_labels)
 
         outputs = (logits,)
-        if labels is not None:      # I never use None for labels. Even at blind testing, I pass all zero labels to the model
+        if labels is not None:      
             labels = [label[mask] for mask, label in zip(label_masks, labels)]
             labels = pad_sequence(labels, batch_first=True, padding_value=-1)  # (b, local_max_len)
             loss_fct = CrossEntropyLoss(ignore_index=-1, reduction='sum')
@@ -208,7 +135,7 @@ class DepMultiTaskClassify2(nn.Module):    #(BertForTokenClassification):   #(nn
         logits = self.classifier(token_reprs)  # (b, local_max_len, num_labels)
 
         outputs = (logits,)
-        if labels is not None:      # I never use None for labels. Even at blind testing, I pass all zero labels to the model
+        if labels is not None:      
             labels = [label[mask] for mask, label in zip(label_masks, labels)]
             labels = pad_sequence(labels, batch_first=True, padding_value=-1)  # (b, local_max_len)
             loss_fct = CrossEntropyLoss(ignore_index=-1, reduction='sum')
@@ -270,8 +197,7 @@ class MultiTaskClassifier(torch.nn.Module):
         
         outputs = (logits, logits_aux)
         
-        if labels is not None:      # I don't use None for labels. 
-                                    # Even when blind testing, I pass all zero labels to the model 
+        if labels is not None:      
             labels = [label[mask] for mask, label in zip(label_masks, labels)]
             labels = pad_sequence(labels, batch_first=True, padding_value=-1)  # (b, local_max_len)
             loss_fct = CrossEntropyLoss(ignore_index=-1, reduction='sum')
