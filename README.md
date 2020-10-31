@@ -22,8 +22,8 @@ The system ranked first in the open track of the shared task.
 
 The requirements as listed in `requirements.txt` are:
 - PyTorch
-- transformers
-- torch_struct
+- [Transformers](https://github.com/huggingface/transformers)
+- [Torch_Struct](https://github.com/harvardnlp/pytorch-struct)
 
 ## How to Run the System
 
@@ -38,7 +38,7 @@ The requirements as listed in `requirements.txt` are:
                Sara Bahaadini and
                Ekaterina Kochmar},
   title     = {MTLB-STRUCT @PARSEME 2020: Capturing Unseen Multiword Expressions 
-                Using Multi-task Learning and Pre-trained Masked Language Models},
+               Using Multi-task Learning and Pre-trained Masked Language Models},
   year      = {2020},
   url       = {}
 }
