@@ -40,6 +40,8 @@ The requirements as listed in `requirements.txt` are:
   title     = {MTLB-STRUCT @PARSEME 2020: Capturing Unseen Multiword Expressions 
                Using Multi-task Learning and Pre-trained Masked Language Models},
   year      = {2020},
-  url       = {}
+  eprint={2011.02541},
+  archivePrefix={arXiv},
+  url       = {https://arxiv.org/abs/2011.02541?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+arxiv%2FQSXk+%28ExcitingAds%21+cs+updates+on+arXiv.org%29}
 }
 ```
