@@ -96,7 +96,7 @@ def eval(iter_data, model, tags2idx, device_name, mt=False):
             logits_to_append.append(logs)
 
         predictions.extend(predictions_to_append)
-        true_labels.append(labels_to_append)
+        true_labels.extend(labels_to_append)
         data_instances.extend(b_input_ids)
         probs.extend(logits_to_append)
 
@@ -111,11 +111,11 @@ def eval(iter_data, model, tags2idx, device_name, mt=False):
     eval_loss = eval_loss / nb_eval_steps
     logger.info("eval loss (only main): {}".format(eval_loss))
     idx2tags = {tags2idx[t]: t for t in tags2idx}
-    pred_tags = [idx2tags[p_i] for p in predictions for p_i in p]
-    valid_tags = [idx2tags[l_ii] for l in true_labels for l_i in l for l_ii in l_i]
+    pred_tags = [[idx2tags[p_i] for p_i in p] for p in predictions]
+    valid_tags = [[idx2tags[l_i] for l_i in l] for l in true_labels]
     logger.info("Seqeval accuracy: {}".format(accuracy_score(valid_tags, pred_tags)))
     fscore = f1_score(valid_tags, pred_tags)
-    logger.info("Seqeval F1-Score: {}".format(f1_score(valid_tags, pred_tags)))
+    logger.info("Seqeval F1-Score: {}".format(fscore))
     logger.info("Seqeval Classification report: -- ")
     logger.info(classification_report(valid_tags, pred_tags))
 
