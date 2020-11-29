@@ -42,6 +42,6 @@ The requirements as listed in `requirements.txt` are:
   year      = {2020},
   eprint={2011.02541},
   archivePrefix={arXiv},
-  url       = {https://arxiv.org/abs/2011.02541?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+arxiv%2FQSXk+%28ExcitingAds%21+cs+updates+on+arXiv.org%29}
+  url       = {}
 }
 ```
