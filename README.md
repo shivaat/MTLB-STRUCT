@@ -31,6 +31,8 @@ The requirements as listed in `requirements.txt` are:
 2. Choose the configuration file from the /code/config/ directory or make your own config file with the same fileds as in the files in the config directory.
 3. Run `main.py config/{config.json}`
 
+This performs training the model based on the config file you passed as the argument. As a result of this, the trained model will be saved in a directory called `saved` and then it can be used for testing the model.
+
 ### Reference
 ```
 @article{Taslimipoor2020,
