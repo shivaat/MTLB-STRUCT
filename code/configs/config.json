@@ -16,6 +16,7 @@
     "batch_size": 32,
     "num_epochs": 10,
     "learning_rate": 3e-5,
+    "dep_loss_factor": 700,
     "save_dir": "./saved/",
     "seed": 100
   }
