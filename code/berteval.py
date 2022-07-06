@@ -112,6 +112,7 @@ def eval(iter_data, model, tags2idx, device_name, mt=False):
     logger.info("eval loss (only main): {}".format(eval_loss))
     #idx2tags = {tags2idx[t]: t for t in tags2idx}
     # Changing the o-X labels to O, make the labels compatible with seqeval formatting
+    idx2tags = {}
     for t in tags2idx:
         if not t.startswith('o-'):
             idx2tags[tags2idx[t]]= t
