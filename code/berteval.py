@@ -110,14 +110,20 @@ def eval(iter_data, model, tags2idx, device_name, mt=False):
 
     eval_loss = eval_loss / nb_eval_steps
     logger.info("eval loss (only main): {}".format(eval_loss))
-    idx2tags = {tags2idx[t]: t for t in tags2idx}
+    #idx2tags = {tags2idx[t]: t for t in tags2idx}
+    # Changing the o-X labels to O, make the labels compatible with seqeval formatting
+    for t in tags2idx:
+        if not t.startswith('o-'):
+            idx2tags[tags2idx[t]]= t
+        else:
+            idx2tags[tags2idx[t]]='O'
     pred_tags = [[idx2tags[p_i] for p_i in p] for p in predictions]
     valid_tags = [[idx2tags[l_i] for l_i in l] for l in true_labels]
     logger.info("Seqeval accuracy: {}".format(accuracy_score(valid_tags, pred_tags)))
-    fscore = f1_score(valid_tags, pred_tags)
+    fscore = f1_score(valid_tags, pred_tags, zero_division=0)
     logger.info("Seqeval F1-Score: {}".format(fscore))
     logger.info("Seqeval Classification report: -- ")
-    logger.info(classification_report(valid_tags, pred_tags))
+    logger.info(classification_report(valid_tags, pred_tags, zero_division=0))
 
     final_labels = [[idx2tags[p_i] for p_i in p] for p in predictions]
     return final_labels, probs, fscore
