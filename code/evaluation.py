@@ -89,10 +89,8 @@ def labels2Parsemetsv(labels, mainTest, predOut):
                         
                         predFile.write("\t".join(lineParts[0:-1])+"\t"+"*"+"\n")
                         wrdIdx += 1
-                        print('long sentence', wrdIdx)
-                        #print("ERRor (sent index)", sentIdx, labels[sentIdx])
-                        #print(line)
- 
+                        #print('long sentence', wrdIdx)
+                        
                 else:
                     print("number of sents are greater than labels!")
             
