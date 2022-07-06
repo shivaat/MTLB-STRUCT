@@ -33,7 +33,9 @@ The requirements as listed in `requirements.txt` are:
 
 This performs training the model based on the config file you passed as the argument. As a result of this, the trained model will be saved in a directory called `saved` and then it can be used for testing the model.
 
-Later on you can evaluate/test your model by running `load_test.py [PATH TO THE DIRECTORY OF SAVED MODEL]`. This prints out the evaluation results and save the prediction `.cupt` file in the saved directory.
+You can get the predictions on dev/test data by running `load_test.py [PATH TO THE DIRECTORY OF SAVED MODEL]`. This saves the prediction `.cupt` file in the saved directory.
+
+We evaluate the performance of our predictions using [PARSEME evaluation script]{https://gitlab.com/parseme/sharedtask-data/-/tree/master/1.2/bin} `evaluate.py`.
 
 ### Reference
 ```
