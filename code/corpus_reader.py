@@ -9,7 +9,7 @@ class Corpus_reader:
 		o is the tag for tokens in between the components of an MWE which do not belong to the MWE.
 	"""
 
-	def __init__(self, path):
+	def __init__(self, path, binary=False):
 
 		parsemeCorpus = Corpus(path)
 		self.train_sents = [] #None
@@ -25,6 +25,7 @@ class Corpus_reader:
 		if parsemeCorpus.blindTestSents:
                         self.blind_test_sents = parsemeCorpus.blindTestSents
 		#self.test_sents, self.devMweNum = parsemeCorpus.readCuptFile(path+"test.cupt")
+		self.binary = binary
 
 	def read(self, sents):
 		seqs = []
@@ -35,26 +36,29 @@ class Corpus_reader:
 				if len(sents[s].tokens[t].parentMWEs) > 0:
 					tag = ''
 					mwe = sents[s].tokens[t].parentMWEs[0]
+					mwe_type = mwe.type
+					if self.binary:
+						mwe_type = 'X'
                                         # Check if the token is the first components of MWE
 					if sents[s].tokens[t] == mwe.tokens[0]: 
-						tag = tag + 'B_'
+						tag = tag + 'B-'
 						if not mwe.isSingleWordExp:
 							active_mwe = 1
 					else:
-						tag = tag + 'I_'
+						tag = tag + 'I-'
                                                 # Check if the token is the first components of MWE
 						if sents[s].tokens[t] == mwe.tokens[-1]: 
 							active_mwe = 0
-					tag = tag + mwe.type
+					tag = tag + mwe_type #mwe.type
 					for mwe in sents[s].tokens[t].parentMWEs[1:]:
 						if sents[s].tokens[t] == mwe.tokens[0]:
-							tag = tag + ';B_'
+							tag = tag + ';B-'
 						else:
-							tag = tag + ';I_'
-						tag = tag + mwe.type
+							tag = tag + ';I-'
+						tag = tag + mwe_type # mwe.type
 
 				elif active_mwe:
-					tag = 'o_' + mwe.type
+					tag = 'o-' + mwe_type # mwe.type
 				else:
 					tag = 'O'
 
