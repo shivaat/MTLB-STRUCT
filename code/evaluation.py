@@ -47,29 +47,29 @@ def labels2Parsemetsv(labels, mainTest, predOut):
                             predFile.write("\t".join(lineParts[0:-1])+"\t"+"*"+"\n")
                             wrdIdx += 1
                             continue
-                        elif str(labels[sentIdx][wrdIdx]).startswith('B_') or str(labels[sentIdx][wrdIdx]).startswith('I_'):
+                        elif str(labels[sentIdx][wrdIdx]).startswith('B-') or str(labels[sentIdx][wrdIdx]).startswith('I-'):
                             diffTags = labels[sentIdx][wrdIdx].split(';')
-                            if diffTags[0].startswith('B_'):
+                            if diffTags[0].startswith('B-'):
                                 mweNum += 1
                                 tag = str(mweNum)+":" + diffTags[0][2:]
                                 mwe[diffTags[0][2:]] = mweNum  # A MWE type might not be unique in a sentence, but the reason that
                                                                # I use a dictionary like this is that I need to keep track of the
                                                                # most recent MWE type. We don't consider and we probably don't have
                                                                # two intervening LVCs 
-                            elif diffTags[0].startswith('I_'):
+                            elif diffTags[0].startswith('I-'):
                                 if diffTags[0][2:] in mwe:
                                     tag = str(mwe[diffTags[0][2:]])
                                 else:          # An I tag should not exist without B, so we filter it out. 
                                     tag = "*"   
                             for idiff in range(1,len(diffTags)):
-                                if diffTags[idiff].startswith('B_'):
+                                if diffTags[idiff].startswith('B-'):
                                     mweNum += 1
                                     if tag != "*":
                                         tag = tag + ';' + str(mweNum)+":" + diffTags[idiff][2:]
                                     else:
                                         tag = str(mweNum)+":" + diffTags[idiff][2:]
                                     mwe[diffTags[idiff][2:]] = mweNum
-                                elif diffTags[idiff].startswith('I_'):
+                                elif diffTags[idiff].startswith('I-'):
                                     if diffTags[idiff][2:] in mwe:   
                                         if tag!="*" and not str(mwe[diffTags[idiff][2:]]) in tag:
                                                         # this 'not' is to make sure that the tags before and after ';'
