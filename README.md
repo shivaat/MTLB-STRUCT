@@ -36,7 +36,7 @@ This performs training the model based on the config file you passed as the argu
 You can get the predictions on dev/test data by running `load_test.py [PATH TO THE DIRECTORY OF SAVED MODEL]`. This saves the prediction `.cupt` file in the saved directory.
 
 Note that the evaluation performance results that you see after running `load_test.py` for development sets, are based on seqeval NER metrics and not the PARSEME evaluation measures. 
-We evaluate the performance of our predictions using [PARSEME evaluation script]{https://gitlab.com/parseme/sharedtask-data/-/tree/master/1.2/bin} `evaluate.py`.
+We evaluate the performance of our predictions using [PARSEME evaluation script](https://gitlab.com/parseme/sharedtask-data/-/tree/master/1.2/bin/) `evaluate.py`.
 
 ### Reference
 ```
