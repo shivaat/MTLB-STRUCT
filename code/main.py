@@ -111,13 +111,8 @@ poses_dict = data_processor.get_pos_dict()
 deprels_dict = data_processor.get_deprels_dict()
 
 tags2idx = {}
-if "transfer" not in config["model"] or not config["model"]["transfer"]:
-    tags_vals = data_processor.get_labels()
-    for (i, label) in enumerate(tags_vals):
-        tags2idx[label] = i
-#tags_vals = {"[CLS]": 0, "[SEP]": 1, "X": 2}
-else:
-    tags2idx = config["data"]["tags2idx"] 
+
+tags2idx = config["data"]["tags2idx"]
 
 idx2tags = {tags2idx[t]: t for t in tags2idx}
 print('# of labels:',len(tags2idx))
@@ -201,7 +196,7 @@ to_save_path = to_save_path + LANG + '_'  + DEVorTEST + "_"+ PRETRAIN_MODEL.repl
 if MULTI_TASK:
     to_save_path = to_save_path + "_multitask"
 else:
-    to_save_path = to_save_path + "_single" 
+    to_save_path = to_save_path
 
 if "transfer" in config["model"] and config["model"]["transfer"]:
     to_save_path = to_save_path + "_transferred"

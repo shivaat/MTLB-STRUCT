@@ -1,0 +1,37 @@
+{
+    "mode": "TRAIN",
+    "data": {
+      "language": "AR",
+      "include_dev_examples": false,
+      "data_path": "../data/1.2/",
+      "max_len": 124,
+      "tags2idx": {"O": 0, 
+                   "I-LVC.full": 1,
+                   "B-LVC.full": 2,   
+                   "I-LVC.cause": 3,
+                   "B-LVC.casue": 4,
+                   "I-MVC": 5,
+                   "B-MVC": 6,
+                   "I-VID": 7,
+                   "B-VID": 8,
+                   "[CLS]": 9,
+                   "[SEP]": 10,
+                   "X":11
+                  },
+      "do_lower_case": false
+    },
+    "model": {
+      "pretrained_model_name":"xlm-roberta-base",
+      "pretrained_model_vocab":"xlm-roberta-base",
+      "multi_task": false
+    },
+    "training": {
+      "batch_size":4,
+      "num_epochs":10,
+      "learning_rate": 1e-4,
+      "dep_loss_factor": 300,
+      "save_dir": "./saved/",
+      "seed": 100
+    }
+  }
+  

@@ -1,0 +1,44 @@
+{
+    "mode": "TRAIN",
+    "data": {
+      "language": "ALL",
+      "include_dev_examples": false,
+      "data_path": "../data/1.2/",
+      "max_len": 124,
+      "tags2idx": {
+        "O": 0,
+        "I-LVC.full": 1,
+        "B-LVC.full": 2,
+        "I-LVC.cause": 3,
+        "B-LVC.casue": 4,
+        "I-MVC": 5,
+        "B-MVC": 6,
+        "I-VID": 7,
+        "B-VID": 8,
+        "I-IAV": 9,
+        "B-IAV": 10,
+        "I-VPC.full": 11,
+        "B-VPC.full": 12,
+        "I-VPC.semi": 13,
+        "B-VPC.semi": 14,
+        "[CLS]": 15,
+        "[SEP]": 16,
+        "X": 17
+      },
+      "do_lower_case": false
+    },
+    "model": {
+      "pretrained_model_name":"aubmindlab/bert-base-arabertv02",
+      "pretrained_model_vocab":"aubmindlab/bert-base-arabertv02",
+      "multi_task": false
+    },
+    "training": {
+      "batch_size":32,
+      "num_epochs":10,
+      "learning_rate": 1e-4,
+      "dep_loss_factor": 300,
+      "save_dir": "./saved/",
+      "seed": 100
+    }
+  }
+
